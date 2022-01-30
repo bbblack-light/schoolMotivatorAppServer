@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 
-@Entity(name = "disciptine")
+@Entity(name = "discipline")
 @Getter
 @Setter
 public class Discipline extends BaseEntity {
