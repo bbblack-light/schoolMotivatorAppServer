@@ -32,7 +32,7 @@ public class DisciplineController {
     }
 
     @GetMapping("/all")
-    public List<DisciplineDto> update(@RequestBody Pageable pageable) {
+    public List<DisciplineDto> getAll(Pageable pageable) {
         return disciplineService.getAll(pageable);
     }
 
