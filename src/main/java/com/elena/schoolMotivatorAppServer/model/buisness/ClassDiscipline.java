@@ -13,9 +13,9 @@ import javax.persistence.ManyToOne;
 @Setter
 public class ClassDiscipline extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "class_id")
+    @JoinColumn(name = "class_id", nullable = false)
     private Classes classes;
     @ManyToOne
-    @JoinColumn(name = "discipline_id")
+    @JoinColumn(name = "discipline_id", nullable = false)
     private Discipline discipline;
 }

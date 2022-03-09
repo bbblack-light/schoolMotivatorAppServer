@@ -17,7 +17,7 @@ import java.util.Optional;
 public class TokenUtil {
 
     //private static final long VALIDITY_TIME_MS = 10 * 24 * 60 * 60 * 1000;// 10 days Validity
-    private static final long VALIDITY_TIME_MS =  2 * 60 * 60 * 1000; // 2 hours  validity
+    private static final long VALIDITY_TIME_MS =  24 * 60 * 60 * 1000; // 24 hours  validity
     private static final String AUTH_HEADER_NAME = "Authorization";
 
     private String secret="mrin";

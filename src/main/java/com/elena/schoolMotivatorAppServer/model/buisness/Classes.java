@@ -4,6 +4,7 @@ import com.elena.schoolMotivatorAppServer.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public class Classes extends BaseEntity {
     private String name;
     private String description;
-    @OneToMany(mappedBy = "discipline")
+    @OneToMany(mappedBy = "discipline", cascade = CascadeType.ALL)
     private List<ClassDiscipline> disciplines;
     //todo: check for disciplines
 }

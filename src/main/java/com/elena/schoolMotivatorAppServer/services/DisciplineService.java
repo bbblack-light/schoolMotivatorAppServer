@@ -7,9 +7,9 @@ import com.elena.schoolMotivatorAppServer.model.buisness.Discipline;
 import com.elena.schoolMotivatorAppServer.repo.DisciplinesRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,11 +24,13 @@ public class DisciplineService {
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
     public DisciplineDto update(DisciplineDto dto) {
         Discipline d = modelMapper.map(dto, Discipline.class);
         return modelMapper.map(disciplinesRepo.save(d), DisciplineDto.class);
     }
 
+    @Transactional
     public OperationResponse delete(long id) {
         if (!disciplinesRepo.existsById(id)) {
             return new OperationResponse(" Дисциплина не существует");
@@ -38,6 +40,7 @@ public class DisciplineService {
         return new OperationResponse("Дисциплина удалена");
     }
 
+    @Transactional
     public DisciplineDto getById(long id) {
         if (!disciplinesRepo.existsById(id)) {
             throw new NotFoundException(" Дисциплина не существует");
@@ -45,8 +48,9 @@ public class DisciplineService {
         return modelMapper.map(disciplinesRepo.getById(id), DisciplineDto.class);
     }
 
-    public List<DisciplineDto> getAll(Pageable pageable) {
-        return disciplinesRepo.findAll(pageable).get()
+    @Transactional
+    public List<DisciplineDto> getAll() {
+        return disciplinesRepo.findAll().stream()
                 .map(x -> modelMapper.map(x, DisciplineDto.class))
                 .collect(Collectors.toList());
     }

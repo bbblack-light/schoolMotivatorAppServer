@@ -5,7 +5,6 @@ import com.elena.schoolMotivatorAppServer.dto.buisness.DisciplineDto;
 import com.elena.schoolMotivatorAppServer.services.DisciplineService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +31,8 @@ public class DisciplineController {
     }
 
     @GetMapping("/all")
-    public List<DisciplineDto> getAll(Pageable pageable) {
-        return disciplineService.getAll(pageable);
+    public List<DisciplineDto> getAll() {
+        return disciplineService.getAll();
     }
 
     @GetMapping("/{id}")
