@@ -1,8 +1,6 @@
 package com.elena.schoolMotivatorAppServer.model.buisness;
 
 import com.elena.schoolMotivatorAppServer.model.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -10,8 +8,6 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity(name = "grades")
-@Getter
-@Setter
 public class Grades extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "discipline_id")
@@ -21,4 +17,36 @@ public class Grades extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "child_id")
     private Child child;
+
+    public Discipline getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
+    }
+
+    public float getGrade() {
+        return grade;
+    }
+
+    public void setGrade(float grade) {
+        this.grade = grade;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Child getChild() {
+        return child;
+    }
+
+    public void setChild(Child child) {
+        this.child = child;
+    }
 }
