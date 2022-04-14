@@ -33,7 +33,7 @@ public class DisciplineService {
     @Transactional
     public OperationResponse delete(long id) {
         if (!disciplinesRepo.existsById(id)) {
-            return new OperationResponse(" Дисциплина не существует");
+            return new OperationResponse("Дисциплина не существует");
         }
         Discipline discipline = disciplinesRepo.getById(id);
         disciplinesRepo.delete(discipline);
@@ -43,7 +43,7 @@ public class DisciplineService {
     @Transactional
     public DisciplineDto getById(long id) {
         if (!disciplinesRepo.existsById(id)) {
-            throw new NotFoundException(" Дисциплина не существует");
+            throw new NotFoundException("Дисциплина не существует");
         }
         return modelMapper.map(disciplinesRepo.getById(id), DisciplineDto.class);
     }

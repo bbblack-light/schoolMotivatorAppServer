@@ -33,7 +33,6 @@ public class ClassService {
     }
 
     @Transactional
-    //todo: not saving disciplines correctly
     public ClassDto update(ClassDto dto) {
         Classes fromrepo;
         if (dto.getId() == null){
@@ -92,7 +91,7 @@ public class ClassService {
     @Transactional
     public ClassDto getById(long id) {
         if (!classesRepo.existsById(id)) {
-            throw new NotFoundException(" Класс не существует");
+            throw new NotFoundException("Класс не существует");
         }
         return modelMapper.map(classesRepo.getById(id), ClassDto.class);
     }

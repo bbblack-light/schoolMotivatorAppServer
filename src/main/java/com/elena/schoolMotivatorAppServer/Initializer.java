@@ -2,6 +2,7 @@ package com.elena.schoolMotivatorAppServer;
 
 import com.elena.schoolMotivatorAppServer.model.user.Role;
 import com.elena.schoolMotivatorAppServer.model.user.User;
+import com.elena.schoolMotivatorAppServer.services.DisciplineService;
 import com.elena.schoolMotivatorAppServer.services.UserService;
 import org.springframework.stereotype.Component;
 

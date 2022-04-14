@@ -1,10 +1,9 @@
 package com.elena.schoolMotivatorAppServer.config;
 
+import com.elena.schoolMotivatorAppServer.dto.buisness.AchievementDto;
 import com.elena.schoolMotivatorAppServer.dto.buisness.ClassDto;
 import com.elena.schoolMotivatorAppServer.dto.buisness.DisciplineDto;
-import com.elena.schoolMotivatorAppServer.model.buisness.ClassDiscipline;
-import com.elena.schoolMotivatorAppServer.model.buisness.Classes;
-import com.elena.schoolMotivatorAppServer.model.buisness.Discipline;
+import com.elena.schoolMotivatorAppServer.model.buisness.*;
 import com.elena.schoolMotivatorAppServer.repo.ClassesDisciplineRepo;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -12,6 +11,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,6 +74,15 @@ public class ModelMapperConfiguration {
                                 .collect(Collectors.toList()));
                     }
             );
+        });
+    }
+
+    private void configureAchievementMappings(ModelMapper modelMapper) {
+        modelMapper.typeMap(Achievement.class, AchievementDto.class).addMappings(mapper -> {
+
+            mapper.map(Achievement::getChildren, (AchievementDto dto, List<ChildAchievement> children) ->
+                    dto.setChildrenCount( CollectionUtils.isEmpty(children) ? 0 : children.size()) );
+
         });
     }
 

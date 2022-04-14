@@ -1,9 +1,11 @@
 package com.elena.schoolMotivatorAppServer.model.buisness;
 
 import com.elena.schoolMotivatorAppServer.model.BaseEntity;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
 public class Achievement extends BaseEntity {
     private String name;
     private String description;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String base64;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "achievement")
     private List<ChildAchievement> children;
