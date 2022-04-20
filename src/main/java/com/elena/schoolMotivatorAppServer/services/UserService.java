@@ -68,7 +68,7 @@ public class UserService {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         User newUser = this.getUserInfoByUserId(user.getUserId());
         if (newUser == null) {
-            user.setRole(Role.PARENT);
+            user.setRole(Role.USER);
             return this.insertOrSaveUser(user);
         } else {
             return false;

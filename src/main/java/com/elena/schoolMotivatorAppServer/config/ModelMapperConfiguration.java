@@ -1,10 +1,12 @@
 package com.elena.schoolMotivatorAppServer.config;
 
-import com.elena.schoolMotivatorAppServer.dto.buisness.AchievementDto;
-import com.elena.schoolMotivatorAppServer.dto.buisness.ClassDto;
-import com.elena.schoolMotivatorAppServer.dto.buisness.DisciplineDto;
-import com.elena.schoolMotivatorAppServer.model.buisness.*;
+import com.elena.schoolMotivatorAppServer.dto.*;
+import com.elena.schoolMotivatorAppServer.dto.user.UserDto;
+import com.elena.schoolMotivatorAppServer.model.*;
+import com.elena.schoolMotivatorAppServer.repo.ChildrenRepo;
 import com.elena.schoolMotivatorAppServer.repo.ClassesDisciplineRepo;
+import com.elena.schoolMotivatorAppServer.repo.DisciplinesRepo;
+import com.elena.schoolMotivatorAppServer.repo.UserRepo;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -14,15 +16,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Configuration
 public class ModelMapperConfiguration {
     private final ClassesDisciplineRepo classesDisciplineRepo;
+    private final UserRepo userRepo;
+    private final DisciplinesRepo disciplinesRepo;
+    private final ChildrenRepo childrenRepo;
 
     @Autowired
-    public ModelMapperConfiguration(ClassesDisciplineRepo classesDisciplineRepo) {
+    public ModelMapperConfiguration(ClassesDisciplineRepo classesDisciplineRepo, UserRepo userRepo, DisciplinesRepo disciplinesRepo, ChildrenRepo childrenRepo) {
         this.classesDisciplineRepo = classesDisciplineRepo;
+        this.userRepo = userRepo;
+        this.disciplinesRepo = disciplinesRepo;
+        this.childrenRepo = childrenRepo;
     }
 
     @Bean
@@ -30,7 +39,44 @@ public class ModelMapperConfiguration {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         configureClassMappings(modelMapper);
+        configureChildrenMappings(modelMapper);
+        configureGradeMappings(modelMapper);
         return modelMapper;
+    }
+
+    private void configureChildrenMappings(ModelMapper modelMapper) {
+        modelMapper.typeMap(ChildDto.class, Child.class).addMappings(mapper -> {
+            mapper.map(ChildDto::getParent, (Child child, UserDto userDto) -> {
+                if (userDto!=null) userRepo.findOneByUserId(userDto.getUserId()).ifPresent(child::setParent);
+                else child.setParent(null);
+            });
+        });
+    }
+
+
+    private void configureGradeMappings(ModelMapper modelMapper) {
+        modelMapper.typeMap(GradeDto.class, Grades.class).addMappings(mapper -> {
+            mapper.map(GradeDto::getDiscipline, (Grades grades, DisciplineDto disciplineDto) -> {
+                if (disciplineDto!=null) {
+                    Optional<Discipline> d = disciplinesRepo.findById(disciplineDto.getId());
+                    if (d.isPresent()) {
+                        grades.setDiscipline(d.get());
+                        return;
+                    }
+                }
+                grades.setDiscipline(null);
+            });
+            mapper.map(GradeDto::getChildId, (Grades grades, Long childId) -> {
+                if (childId!=null) {
+                    Optional<Child> d = childrenRepo.findById(childId);
+                    if (d.isPresent()) {
+                        grades.setChild(d.get());
+                        return;
+                    }
+                }
+                grades.setChild(null);
+            });
+        });
     }
 
     private void configureClassMappings(ModelMapper modelMapper) {

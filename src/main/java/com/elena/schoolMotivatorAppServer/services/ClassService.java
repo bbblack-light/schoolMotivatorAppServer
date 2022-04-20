@@ -2,10 +2,10 @@ package com.elena.schoolMotivatorAppServer.services;
 
 import com.elena.schoolMotivatorAppServer.controllers.utils.exception.NotFoundException;
 import com.elena.schoolMotivatorAppServer.controllers.utils.response.OperationResponse;
-import com.elena.schoolMotivatorAppServer.dto.buisness.ClassDto;
-import com.elena.schoolMotivatorAppServer.dto.buisness.DisciplineDto;
-import com.elena.schoolMotivatorAppServer.model.buisness.ClassDiscipline;
-import com.elena.schoolMotivatorAppServer.model.buisness.Classes;
+import com.elena.schoolMotivatorAppServer.dto.ClassDto;
+import com.elena.schoolMotivatorAppServer.dto.DisciplineDto;
+import com.elena.schoolMotivatorAppServer.model.ClassDiscipline;
+import com.elena.schoolMotivatorAppServer.model.Classes;
 import com.elena.schoolMotivatorAppServer.repo.ClassesDisciplineRepo;
 import com.elena.schoolMotivatorAppServer.repo.ClassesRepo;
 import org.modelmapper.ModelMapper;

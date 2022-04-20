@@ -1,4 +1,4 @@
-package com.elena.schoolMotivatorAppServer.dto.buisness;
+package com.elena.schoolMotivatorAppServer.dto;
 
 import com.elena.schoolMotivatorAppServer.dto.BaseDto;
 import lombok.NoArgsConstructor;

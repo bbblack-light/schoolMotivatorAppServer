@@ -1,7 +1,7 @@
 package com.elena.schoolMotivatorAppServer.Services;
 
 import com.elena.schoolMotivatorAppServer.controllers.utils.response.OperationResponse;
-import com.elena.schoolMotivatorAppServer.dto.buisness.AchievementDto;
+import com.elena.schoolMotivatorAppServer.dto.AchievementDto;
 import com.elena.schoolMotivatorAppServer.services.AchievementService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;

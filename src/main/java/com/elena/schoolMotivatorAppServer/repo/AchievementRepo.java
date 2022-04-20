@@ -1,6 +1,6 @@
 package com.elena.schoolMotivatorAppServer.repo;
 
-import com.elena.schoolMotivatorAppServer.model.buisness.Achievement;
+import com.elena.schoolMotivatorAppServer.model.Achievement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -2,9 +2,8 @@ package com.elena.schoolMotivatorAppServer.services;
 
 import com.elena.schoolMotivatorAppServer.controllers.utils.exception.NotFoundException;
 import com.elena.schoolMotivatorAppServer.controllers.utils.response.OperationResponse;
-import com.elena.schoolMotivatorAppServer.dto.buisness.AchievementDto;
-import com.elena.schoolMotivatorAppServer.dto.buisness.DisciplineDto;
-import com.elena.schoolMotivatorAppServer.model.buisness.Achievement;
+import com.elena.schoolMotivatorAppServer.dto.AchievementDto;
+import com.elena.schoolMotivatorAppServer.model.Achievement;
 import com.elena.schoolMotivatorAppServer.repo.AchievementRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

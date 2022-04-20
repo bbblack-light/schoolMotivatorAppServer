@@ -1,8 +1,8 @@
 package com.elena.schoolMotivatorAppServer.Services;
 
 import com.elena.schoolMotivatorAppServer.controllers.utils.response.OperationResponse;
-import com.elena.schoolMotivatorAppServer.dto.buisness.ClassDto;
-import com.elena.schoolMotivatorAppServer.dto.buisness.DisciplineDto;
+import com.elena.schoolMotivatorAppServer.dto.ClassDto;
+import com.elena.schoolMotivatorAppServer.dto.DisciplineDto;
 import com.elena.schoolMotivatorAppServer.services.ClassService;
 import com.elena.schoolMotivatorAppServer.services.DisciplineService;
 import com.google.common.base.Objects;

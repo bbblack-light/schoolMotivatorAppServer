@@ -29,20 +29,9 @@ public class Initializer {
         User user = new User();
         user.setPassword("$2a$10$U0fbYjlwLFraz1UHrjjX2.rErJoP/X.KIRthU9jtmMkRACYBeVOpG");
         user.setUserId("parent1");
-        user.setRole(Role.PARENT);
+        user.setRole(Role.USER);
         user.setFirstName("Евгений");
         user.setLastName("Королев");
-        service.insertOrSaveUser(user);
-
-    }
-
-    public static void createChild() {
-        User user = new User();
-        user.setPassword("$2a$10$U0fbYjlwLFraz1UHrjjX2.rErJoP/X.KIRthU9jtmMkRACYBeVOpG");
-        user.setUserId("child1");
-        user.setRole(Role.CHILD);
-        user.setFirstName("Иванов");
-        user.setLastName("Иван");
         service.insertOrSaveUser(user);
 
     }

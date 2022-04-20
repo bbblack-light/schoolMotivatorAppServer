@@ -1,8 +1,8 @@
-package com.elena.schoolMotivatorAppServer.controllers.buisness;
+package com.elena.schoolMotivatorAppServer.controllers;
 
 
 import com.elena.schoolMotivatorAppServer.controllers.utils.response.OperationResponse;
-import com.elena.schoolMotivatorAppServer.dto.buisness.ClassDto;
+import com.elena.schoolMotivatorAppServer.dto.ClassDto;
 import com.elena.schoolMotivatorAppServer.services.ClassService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
