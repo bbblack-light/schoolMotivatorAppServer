@@ -27,8 +27,9 @@ public class EmailService {
             return new OperationResponse("ok");
         }
         catch (Exception e) {
-            return new OperationResponse(e.getMessage());
+            if (e.getMessage().contains("Invalid Addresses"))
+                return new OperationResponse("Некорректная почта");
+            else return new OperationResponse("Произошла ошибка с почтой");
         }
-
     }
 }

@@ -4,14 +4,18 @@ import com.elena.schoolMotivatorAppServer.model.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Entity(name = "child")
 @Data
 public class Child extends BaseEntity {
-    private String name;
-    private Date birthday;
+    private String firstName;
+    private String lastName;
+    private String patronymic;
+    private LocalDate birthday;
+    private String base64;
     @ManyToOne
     @JoinColumn(name = "class_id")
     private Classes actualClass;

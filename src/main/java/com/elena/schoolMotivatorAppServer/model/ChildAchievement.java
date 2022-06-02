@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity(name = "join_child_achievement")
 @Data
@@ -16,5 +16,8 @@ public class ChildAchievement extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "achievement_id")
     private Achievement achievement;
-    private Date date;
+
+    private int progress;
+    private LocalDate date;
+    private boolean isFinished;
 }

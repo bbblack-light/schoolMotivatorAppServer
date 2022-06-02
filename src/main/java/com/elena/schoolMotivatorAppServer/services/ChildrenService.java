@@ -19,12 +19,14 @@ import java.util.stream.Collectors;
 @Service
 public class ChildrenService {
     private ChildrenRepo childrenRepo;
+    private AchievementService achievementService;
     private ModelMapper modelMapper;
     private UserRepo userRepo;
 
     @Autowired
-    public ChildrenService(ChildrenRepo childrenRepo, ModelMapper modelMapper, UserRepo userRepo) {
+    public ChildrenService(ChildrenRepo childrenRepo, AchievementService achievementService, ModelMapper modelMapper, UserRepo userRepo) {
         this.childrenRepo = childrenRepo;
+        this.achievementService = achievementService;
         this.modelMapper = modelMapper;
         this.userRepo = userRepo;
     }
@@ -32,7 +34,21 @@ public class ChildrenService {
     @Transactional
     public ChildDto update(ChildDto dto) {
         Child child = modelMapper.map(dto, Child.class);
-        return modelMapper.map(childrenRepo.save(child), ChildDto.class);
+        Optional<User> userOptional = userRepo.findOneByUserId(dto.getParentId());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            child.setParent(user);
+        }
+        else {
+            throw new NotFoundException("parent must not be null");
+        }
+        if (dto.getId()==null) {
+            child = achievementService.addChildAchievement(childrenRepo.save(child));
+        }
+        else {
+            child = childrenRepo.save(child);
+        }
+        return modelMapper.map(child, ChildDto.class);
     }
 
     @Transactional
@@ -42,7 +58,7 @@ public class ChildrenService {
         }
         Child child = childrenRepo.getById(id);
         childrenRepo.delete(child);
-        return new OperationResponse("Ребенок удален");
+        return new OperationResponse("ok");
     }
 
     @Transactional

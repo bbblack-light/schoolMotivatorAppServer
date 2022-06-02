@@ -1,13 +1,14 @@
 package com.elena.schoolMotivatorAppServer.dto;
+
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data
-public class GradeDto extends BaseDto {
-    private DisciplineDto discipline;
+public class ChildAchievementDto {
     private Long childId;
-    private int value;
+    private AchievementDto achievement;
+    private int progress;
     private Date date;
+    private boolean isFinished;
 }

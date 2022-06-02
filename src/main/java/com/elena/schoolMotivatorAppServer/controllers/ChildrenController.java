@@ -20,7 +20,7 @@ public class ChildrenController {
         this.childrenService = disciplineService;
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ChildDto update(@RequestBody ChildDto dto) {
         return childrenService.update(dto);
     }

@@ -7,9 +7,11 @@ import java.util.Date;
 
 @Data
 public class ChildDto extends BaseDto {
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String patronymic;
     private Date birthday;
     private ClassDto actualClass;
-    private UserDto parent;
+    private String parentId;
     private String password;
 }

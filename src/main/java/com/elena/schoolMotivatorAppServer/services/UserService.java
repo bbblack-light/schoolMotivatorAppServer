@@ -6,6 +6,7 @@ import com.elena.schoolMotivatorAppServer.model.user.Role;
 import com.elena.schoolMotivatorAppServer.model.user.User;
 import com.elena.schoolMotivatorAppServer.repo.UserRepo;
 import com.google.common.base.Strings;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,12 +23,15 @@ public class UserService {
 
     private final UserRepo userRepo;
 
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, ModelMapper modelMapper) {
         this.userRepo = userRepo;
+        this.modelMapper = modelMapper;
     }
 
+    @Transactional
     public UserDto getUserInformation(String userIdParam) {
         String loggedInUserId = getLoggedInUserId();
         User user;
@@ -37,7 +42,17 @@ public class UserService {
         } else {
             user = getUserInfoByUserId(userIdParam);
         }
-        return UserDto.convertFromEntity(user);
+        if (user == null) {
+            user =  new User(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    Role.USER);
+        }
+        return modelMapper.map(user, UserDto.class);
     }
 
     public String getLoggedInUserId() {
@@ -64,7 +79,8 @@ public class UserService {
         return true;
     }
 
-    public boolean addNewUser(User user) {
+    public boolean addNewUser(UserDto dto) {
+        User user = modelMapper.map(dto, User.class);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         User newUser = this.getUserInfoByUserId(user.getUserId());
         if (newUser == null) {
