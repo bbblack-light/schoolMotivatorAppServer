@@ -8,6 +8,9 @@ import java.util.List;
 @Entity(name = "discipline")
 @Data
 public class Discipline extends BaseEntity {
+    @Column(name = "ed_id")
+    private Long EDId;
+    @Column(unique = true)
     private String name;
     @Lob
     @Basic(fetch= FetchType.LAZY, optional=true)

@@ -55,6 +55,7 @@ public class UserService {
         return modelMapper.map(user, UserDto.class);
     }
 
+    @Transactional
     public String getLoggedInUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
@@ -64,6 +65,7 @@ public class UserService {
     }
 
 
+    @Transactional
     public User getLoggedInUser() {
         String loggedInUserId = this.getLoggedInUserId();
         return this.getUserInfoByUserId(loggedInUserId);
@@ -74,11 +76,13 @@ public class UserService {
     }
 
 
+    @Transactional
     public boolean insertOrSaveUser(User user) {
         this.userRepo.save(user);
         return true;
     }
 
+    @Transactional
     public boolean addNewUser(UserDto dto) {
         User user = modelMapper.map(dto, User.class);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
@@ -91,6 +95,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public boolean edit(UserDto user) {
         if (user.getPassword() != null && !user.getPassword().equals("")) {
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
@@ -105,10 +110,12 @@ public class UserService {
         return this.insertOrSaveUser(buffUser);
     }
 
+    @Transactional
     public List<UserDto> findAll() {
         return UserDto.convertFromEntities(userRepo.findAll());
     }
 
+    @Transactional
     public ResponseEntity<Object> delete(String userId) {
         Optional<User> user = userRepo.findOneByUserId(userId);
         if (user.isPresent()) {

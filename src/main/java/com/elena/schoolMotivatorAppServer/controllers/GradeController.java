@@ -3,11 +3,15 @@ package com.elena.schoolMotivatorAppServer.controllers;
 import com.elena.schoolMotivatorAppServer.controllers.utils.response.OperationResponse;
 import com.elena.schoolMotivatorAppServer.dto.GradeDto;
 import com.elena.schoolMotivatorAppServer.dto.GradesByWeek;
+import com.elena.schoolMotivatorAppServer.dto.user.UserDto;
+import com.elena.schoolMotivatorAppServer.services.EDService;
 import com.elena.schoolMotivatorAppServer.services.GradeService;
 import io.swagger.annotations.Api;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -15,11 +19,13 @@ import java.util.List;
 @Api(tags = {"Grades"})
 @RequestMapping("/grade")
 public class GradeController {
-    private GradeService gradeService;
+    private final GradeService gradeService;
+    private final EDService edService;
 
     @Autowired
-    public GradeController(GradeService gradeService) {
+    public GradeController(GradeService gradeService, EDService edService) {
         this.gradeService = gradeService;
+        this.edService = edService;
     }
 
     @PostMapping("/")
@@ -43,7 +49,7 @@ public class GradeController {
     }
 
     @GetMapping("/byPeriod/{childId}")
-    public GradesByWeek getByPeriodByChildId(@PathVariable("childId") Long childId, @RequestBody GradesByWeek gradesByWeek) {
+    public GradesByWeek getByPeriodByChildId(@PathVariable("childId") Long childId, @RequestBody GradesByWeek gradesByWeek) throws IOException {
         return gradeService.getByPeriod(childId, gradesByWeek);
     }
 
@@ -52,8 +58,14 @@ public class GradeController {
         return gradeService.getLastWeekByChildId(childId);
     }
 
+    @SneakyThrows
     @GetMapping("/today_grades/{childId}")
-    public List<GradeDto> getTodayByChildId(@PathVariable("childId") Long childId) throws ParseException {
+    public List<GradeDto> getTodayByChildId(@PathVariable("childId") Long childId) throws ParseException, IOException {
         return gradeService.getTodayByChildId(childId);
+    }
+
+    @GetMapping("/ed/updateByPeriod/{childId}")
+    public OperationResponse addEDToken(@PathVariable("childId") Long childId, @RequestBody GradesByWeek dates) throws IOException {
+        return edService.updateGradesByED(childId, dates);
     }
 }

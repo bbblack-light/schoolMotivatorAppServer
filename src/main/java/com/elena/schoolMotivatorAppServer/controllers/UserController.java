@@ -2,7 +2,9 @@ package com.elena.schoolMotivatorAppServer.controllers;
 
 import com.elena.schoolMotivatorAppServer.controllers.utils.response.OperationResponse;
 import com.elena.schoolMotivatorAppServer.dto.user.UserDto;
+import com.elena.schoolMotivatorAppServer.mosRuIntegration.models.UserToken;
 import com.elena.schoolMotivatorAppServer.services.AchievementService;
+import com.elena.schoolMotivatorAppServer.services.EDService;
 import com.elena.schoolMotivatorAppServer.services.EmailService;
 import com.elena.schoolMotivatorAppServer.services.UserService;
 import io.swagger.annotations.Api;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,12 +21,14 @@ public class UserController {
     private final AchievementService achievementService;
     private final EmailService emailService;
     private final UserService userService;
+    private final EDService edService;
 
     @Autowired
-    public UserController(AchievementService achievementService, EmailService emailService, UserService userService) {
+    public UserController(AchievementService achievementService, EmailService emailService, UserService userService, EDService edService) {
         this.achievementService = achievementService;
         this.emailService = emailService;
         this.userService = userService;
+        this.edService = edService;
     }
 
     @GetMapping(value = "/user")
@@ -76,5 +81,10 @@ public class UserController {
     @DeleteMapping("/user/info/{userId}")
     public ResponseEntity<Object> deleteUser(@PathVariable("userId") String userId) {
         return userService.delete(userId);
+    }
+
+    @PostMapping("/ED/token")
+    public UserDto addEDToken(@RequestBody UserToken userToken) throws IOException {
+        return edService.setTokenAndUpdateInfo(userToken);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,15 +33,17 @@ public class GradeService {
     private final ChildrenRepo childrenRepo;
     private final GoalsService goalsService;
     private final AchievementService achievementService;
+    private final EDService edService;
     private final ModelMapper modelMapper;
 
     @Autowired
     public GradeService(GradeRepo gradeRepo, ChildrenRepo childrenRepo,
                         GoalsService goalsService, AchievementService achievementService,
-                        ModelMapper modelMapper) {
+                        EDService edService, ModelMapper modelMapper) {
         this.gradeRepo = gradeRepo;
         this.goalsService = goalsService;
         this.achievementService = achievementService;
+        this.edService = edService;
         this.modelMapper = modelMapper;
         this.childrenRepo = childrenRepo;
     }
@@ -134,10 +137,16 @@ public class GradeService {
     }
 
     @Transactional
-    public GradesByWeek getByPeriod(Long childId, GradesByWeek dto) {
+    public GradesByWeek getByPeriod(Long childId, GradesByWeek dto) throws IOException {
+        Child c = childrenRepo.getById(childId);
+        if (c.getEDId()!=null && c.getParent().getEdToken()!=null && !c.getParent().getEdToken().getEDToken().equals("")) {
+            edService.updateGradesByED(c.getParent(), c, Converters.convertToLocalDateViaInstant(dto.getStart()),
+                    Converters.convertToLocalDateViaInstant(dto.getEnd()));
+        }
+
         dto.setGrades(gradeRepo
                 .findAllByChildAndDateGreaterThanEqualAndDateLessThanEqualOrderByDate(
-                        childrenRepo.getById(childId), Converters.convertToLocalDateViaInstant(dto.getStart()),
+                        c, Converters.convertToLocalDateViaInstant(dto.getStart()),
                         Converters.convertToLocalDateViaInstant(dto.getEnd()))
                 .stream()
                 .map(x -> modelMapper.map(x, GradeDto.class))
@@ -146,11 +155,21 @@ public class GradeService {
     }
 
     @Transactional
-    public List<GradeDto> getTodayByChildId(Long childId) throws ParseException {
+    public List<GradeDto> getTodayByChildId(Long childId) throws ParseException, IOException {
+        Child c = childrenRepo.getById(childId);
+        List<GradeDto> res = gradeRepo
+                .findAllByChildAndDateOrderById(c, LocalDate.now())
+                .stream()
+                .map(x -> modelMapper.map(x, GradeDto.class))
+                .collect(Collectors.toList());
+        if (res.size()!=0) return res;
+
+        if (c.getEDId()!=null && c.getParent().getEdToken()!=null && !c.getParent().getEdToken().getEDToken().equals("")) {
+            edService.updateGradesByED(c.getParent(), c, LocalDate.now(), LocalDate.now());
+        }
 
         return gradeRepo
-                .findAllByChildAndDateOrderById(
-                        childrenRepo.getById(childId), LocalDate.now())
+                .findAllByChildAndDateOrderById(c, LocalDate.now())
                 .stream()
                 .map(x -> modelMapper.map(x, GradeDto.class))
                 .collect(Collectors.toList());

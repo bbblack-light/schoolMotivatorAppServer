@@ -25,6 +25,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 
@@ -41,6 +42,7 @@ public class GenerateTokenForUserFilter extends AbstractAuthenticationProcessing
     }
 
     @Override
+    @Transactional
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException, JSONException {
         try {
             String jsonString = IOUtils.toString(request.getInputStream(), "UTF-8");
@@ -59,6 +61,7 @@ public class GenerateTokenForUserFilter extends AbstractAuthenticationProcessing
     }
 
     @Override
+    @Transactional
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication authToken) throws IOException, ServletException {
         res.setCharacterEncoding("UTF-8");
         SecurityContextHolder.getContext().setAuthentication(authToken);

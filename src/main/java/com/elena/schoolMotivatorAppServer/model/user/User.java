@@ -1,6 +1,8 @@
 package com.elena.schoolMotivatorAppServer.model.user;
 
 import com.elena.schoolMotivatorAppServer.model.Child;
+import com.elena.schoolMotivatorAppServer.model.EDToken;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,6 +22,9 @@ public class User {
     private List<Child> children;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ed_token")
+    private EDToken edToken;
 
     public User() {
         new User(
